@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  AppDelegate.swift
 //  HomeWorkThird
 //
 //  Created by Магомед Абдуразаков on 30/06/2019.
@@ -8,12 +8,10 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-    }
+    var window: UIWindow?
 
 
 }
