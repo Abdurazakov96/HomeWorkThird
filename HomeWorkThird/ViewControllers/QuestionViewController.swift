@@ -10,13 +10,25 @@ import UIKit
 
 class QuestionViewController: UIViewController {
     
-    var score = 0
+    var questionIndex = 0
+    var questions = Question.all
+    var answerChose = [Answer]()
     
-    @IBOutlet var progress: UIProgressView!
     @IBOutlet var labelForQuestion: UILabel!
-    @IBOutlet var questionOne: UIStackView!
+    @IBOutlet var progressView: UIProgressView!
+    
+    @IBOutlet var questionFirst: UIStackView!
+    @IBOutlet var buttonsForFirstQuestion: [UIButton]!
+    
+    
     @IBOutlet var questionSecond: UIStackView!
+    @IBOutlet var labelsForSecondQuestion: [UILabel]!
+    @IBOutlet var switchs: [UISwitch]!
+    
     @IBOutlet var questionThird: UIStackView!
+    @IBOutlet var slider: UISlider!
+    
+    @IBOutlet var labelsForThirdQuestion: [UILabel]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,32 +37,99 @@ class QuestionViewController: UIViewController {
     }
     
     func update() {
-        questionOne.isHidden = true
+        questionFirst.isHidden = true
         questionSecond.isHidden = true
         questionThird.isHidden = true
+        
+        navigationItem.title = "Вопрос №\(questionIndex + 1) из \(questions.count)"
+        
+        let currentQuestion = questions[questionIndex]
+        let answers = currentQuestion.answers
+        let progress = Float(questionIndex)/Float(questions.count)
+        
+        progressView.setProgress(progress, animated: true)
+        labelForQuestion.text = currentQuestion.question
+        
+        switch currentQuestion.type {
+        case .typeForQuestionFirst:
+            updateForFirstQuestion(with: answers)
+        case .typeForQuestionSecond:
+            updateForSecondQuestion(with: answers)
+        case .typeForQuestionThird:
+            updateForThirdQuestion(with: answers)
+        }
     }
     
+    func updateForFirstQuestion (with answers: [Answer]) {
+        questionFirst.isHidden = false
+        for (button, answer) in zip(buttonsForFirstQuestion, answers)
+        { button.setTitle(answer.text, for: [])
+        }
+    }
     
-    @IBAction func resultButtonPressed(_ sender: UIBarButtonItem) {
-        
-        update()
-        
-        switch score {
-        case 0:
-            questionOne.isHidden = false
-        case 1:
-            questionSecond.isHidden = false
-        case 2:
-            questionThird.isHidden = false
-        default:
-            performSegue(withIdentifier: "ResultSegue" , sender: nil)
+    func updateForSecondQuestion (with answers: [Answer]) {
+        questionSecond.isHidden = false
+        for (label, answer) in zip(labelsForSecondQuestion, answers) {
+            label.text = answer.text
+        }
+    }
+    
+    func updateForThirdQuestion (with answers: [Answer]) {
+        questionThird.isHidden = false
+        labelsForThirdQuestion.first?.text = answers[1].text
+        labelsForThirdQuestion.last?.text = answers.first?.text
+    }
+    
+    func nextQuestion() {
+        questionIndex += 1
+        if questionIndex < questions.count {update()}
+        else {
+            performSegue(withIdentifier: "ResultSegue" , sender: nil)}
+    }
+    
+    @IBAction func firstsButtonPressed(_ sender: UIButton) {
+        guard let answerIndex = buttonsForFirstQuestion.firstIndex(of: sender) else {return}
+        let answer = questions[questionIndex].answers[answerIndex]
+        answerChose.append(answer)
+        nextQuestion()
+    }
+    
+    @IBAction func secondButtonPressed(_ sender: UIButton) {
+        for index in 0...3 {if switchs[index].isOn == true {
+            let answer = questions[questionIndex].answers[index]
+            answerChose.append(answer)
+            }
         }
         
-        score += 1
+        nextQuestion()
         
     }
     
+    @IBAction func ThirdButtonPressed(_ sender: UIButton) {
+        switch slider.value {
+        case 1000000...1499999:
+            answerChose.append(questions[questionIndex].answers[0])
+        case 1500000...3999999:
+            answerChose.append(questions[questionIndex].answers[1])
+        case 4000000...9999999:
+            answerChose.append(questions[questionIndex].answers[2])
+        case 9999999...10000000:
+            answerChose.append(questions[questionIndex].answers[3])
+        default:
+            break
+        }
+        
+        nextQuestion()
+        
+    }
     
-    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        guard segue.identifier == "ResultSegue" else {return}
+        
+        let destinationView = segue.destination as! ResultViewController
+        destinationView.responces = answerChose
+ 
+    }
     
 }
