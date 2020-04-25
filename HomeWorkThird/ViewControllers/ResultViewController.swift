@@ -10,16 +10,24 @@ import UIKit
 
 class ResultViewController: UIViewController {
     
-    var responces: [Answer]!
+    // MARK: - IBOutlets
     
     @IBOutlet var resultLabel: UILabel!
+    
+    // MARK: - Public Properties
+    
+    var responces: [Answer]!
+    
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         updateUI()
     }
     
-    func updateUI () {
+    // MARK: - Private func
+    
+    private func updateUI () {
         let carTypes = responces.map {$0.type}
         var carCount = [CarType: Int]()
         
@@ -32,4 +40,5 @@ class ResultViewController: UIViewController {
         
         resultLabel.text = car.definition
     }
+    
 }

@@ -10,9 +10,10 @@ import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
+    // MARK: - Public Properties
+    
     var window: UIWindow?
-
-
+    
 }
 

@@ -9,14 +9,13 @@
 
 struct Question {
     
+    // MARK: - Public Properties
+    
     var question: String
     var type: Type
     var answers: [Answer]
-    
-    
     static var all: [Question] {
         return [
-            
             Question(question: "Какой автомобиль вам больше нравится?", type: .typeForQuestionFirst, answers: [
                 Answer(text: "Спортивный", type: .porshePanamera),
                 Answer(text: "Сдержанный", type: .volkswagenPolo),
@@ -39,4 +38,5 @@ struct Question {
                 ])
         ]
     }
+    
 }

@@ -7,6 +7,9 @@
 //
 
 struct Answer {
+    
+    // MARK: - Public Properties
+    
     var text: String
     var type: CarType
 }

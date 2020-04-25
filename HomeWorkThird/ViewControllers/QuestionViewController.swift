@@ -10,25 +10,26 @@ import UIKit
 
 class QuestionViewController: UIViewController {
     
-    var questionIndex = 0
-    var questions = Question.all
-    var answerChose = [Answer]()
+    // MARK: - IBOutlets
     
     @IBOutlet var labelForQuestion: UILabel!
     @IBOutlet var progressView: UIProgressView!
-    
     @IBOutlet var questionFirst: UIStackView!
     @IBOutlet var buttonsForFirstQuestion: [UIButton]!
-    
-    
     @IBOutlet var questionSecond: UIStackView!
     @IBOutlet var labelsForSecondQuestion: [UILabel]!
     @IBOutlet var switchs: [UISwitch]!
-    
     @IBOutlet var questionThird: UIStackView!
     @IBOutlet var slider: UISlider!
-    
     @IBOutlet var labelsForThirdQuestion: [UILabel]!
+    
+    // MARK: - Private Properties
+    
+    private var questionIndex = 0
+    private var questions = Question.all
+    private var answerChose = [Answer]()
+    
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +37,18 @@ class QuestionViewController: UIViewController {
         
     }
     
-    func update() {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        guard segue.identifier == "ResultSegue" else {return}
+        
+        let destinationView = segue.destination as! ResultViewController
+        destinationView.responces = answerChose
+        
+    }
+    
+    // MARK: - Private methods
+    
+    private func update() {
         questionFirst.isHidden = true
         questionSecond.isHidden = true
         questionThird.isHidden = true
@@ -58,34 +70,40 @@ class QuestionViewController: UIViewController {
         case .typeForQuestionThird:
             updateForThirdQuestion(with: answers)
         }
+        
     }
     
-    func updateForFirstQuestion (with answers: [Answer]) {
+    private func updateForFirstQuestion (with answers: [Answer]) {
         questionFirst.isHidden = false
         for (button, answer) in zip(buttonsForFirstQuestion, answers)
         { button.setTitle(answer.text, for: [])
         }
+        
     }
     
-    func updateForSecondQuestion (with answers: [Answer]) {
+    private func updateForSecondQuestion (with answers: [Answer]) {
         questionSecond.isHidden = false
         for (label, answer) in zip(labelsForSecondQuestion, answers) {
             label.text = answer.text
         }
+        
     }
     
-    func updateForThirdQuestion (with answers: [Answer]) {
+    private func updateForThirdQuestion (with answers: [Answer]) {
         questionThird.isHidden = false
         labelsForThirdQuestion.first?.text = answers[1].text
         labelsForThirdQuestion.last?.text = answers.first?.text
     }
     
-    func nextQuestion() {
+    private func nextQuestion() {
         questionIndex += 1
         if questionIndex < questions.count {update()}
         else {
             performSegue(withIdentifier: "ResultSegue" , sender: nil)}
+        
     }
+    
+    // MARK: - IBActions
     
     @IBAction func firstsButtonPressed(_ sender: UIButton) {
         guard let answerIndex = buttonsForFirstQuestion.firstIndex(of: sender) else {return}
@@ -99,6 +117,7 @@ class QuestionViewController: UIViewController {
             let answer = questions[questionIndex].answers[index]
             answerChose.append(answer)
             }
+            
         }
         
         nextQuestion()
@@ -121,15 +140,6 @@ class QuestionViewController: UIViewController {
         
         nextQuestion()
         
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        guard segue.identifier == "ResultSegue" else {return}
-        
-        let destinationView = segue.destination as! ResultViewController
-        destinationView.responces = answerChose
- 
     }
     
 }

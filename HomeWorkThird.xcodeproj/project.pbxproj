@@ -116,8 +116,8 @@
 			children = (
 				6CE7EDB222CBDBC0005D85C8 /* Question.swift */,
 				6CE7EDB422CBDC7E005D85C8 /* Type.swift */,
-				6CE7EDB622CBDC8A005D85C8 /* Answer.swift */,
 				6CE7EDB822CBDFC3005D85C8 /* CarType.swift */,
+				6CE7EDB622CBDC8A005D85C8 /* Answer.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -347,7 +347,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = FC4H949Q49;
 				INFOPLIST_FILE = HomeWorkThird/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -365,7 +365,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = FC4H949Q49;
 				INFOPLIST_FILE = HomeWorkThird/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
